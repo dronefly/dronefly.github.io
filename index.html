@@ -38,10 +38,14 @@
             }
         }
 
-        function getLat(){
+        function getLat() {
             navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+            var lat = 0;
+
             function foundLocation(position) {
-                return position.coords.latitude;
+                lat = position.coords.latitude;
+            }
+            console.log(lat);
         }
 
         function noLocation() {
@@ -114,7 +118,7 @@
                     near a U.S. military base, or near U.S. National Parks.</p>
                 <p>Checking all these conditions would be too tedious, so we've created
                     an easier way to do it.</p>
-                <p><button onclick="getLocation()">Get Location</button></p>
+                <p><button onclick="getLat()">Get Location</button></p>
             </div>
         </div>
     </section>
@@ -178,8 +182,34 @@
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: -34.397, lng: 150.644},
-                zoom: 8
+                zoom: 16
             });
+            var infoWindow = new google.maps.InfoWindow({map: map});
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Location found.');
+                    map.setCenter(pos);
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
+            }
         }
     </script>
 
