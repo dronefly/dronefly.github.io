@@ -18,10 +18,12 @@ def getShapes():
 
 @app.route('/')
 @app.route('/index')
+@app.route('/index.html')
 def index():
     return render_template('index.html')
 
 @app.route('/droneMap.html')
+@app.route('/droneMap')
 def dronemap():
 	shapes = getShapes()
 	return render_template('droneMap.html', shapes=shapes)
