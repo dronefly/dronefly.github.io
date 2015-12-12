@@ -59,7 +59,17 @@
 </nav>
 
 <!-- Map Section -->
-<div id="map"></div>
+
+<section id="about" class="container content-section text-center" style = "padding-top: 79px;">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <h3 id = 'canFly'>You must allow the website to access your location in order for
+            the site to work</h3>
+        </div>
+    </div>
+</section>
+
+<div id="map" style = "margin-top: 0px;"></div>
 
 <!-- Footer -->
 <footer>
@@ -92,13 +102,24 @@
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
+                canFly(pos);
                 map.setCenter(pos);
                 var marker = new google.maps.Marker({
                     position: pos,
                     map: map,
-                    title: 'Hello World!'
+                    title: 'Drone location',
+					draggable: true
                 });
-
+				
+				google.maps.event.addListener(marker, 'dragend', function(evt){
+                    var tempPos = {
+                        lat: parseFloat(evt.latLng.lat().toFixed(3)),
+                        long: parseFloat(evt.latLng.lng().toFixed(3))
+                    }
+                    map.setCenter(marker.position);
+                    canFly(marker.position);
+                });
+				
             }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -130,6 +151,18 @@
         });
         noFlyZone.setMap(map)
         {% endfor %}
+    }
+	
+	var canFly;
+    function canFly(position) {
+        if (canFly) {
+            $('#canFly').text('You can fly your drone here!');
+        }
+        else {
+            $('#canFly').text('You are not allowed to fly your drone here.');
+        }
+        //this whole part, can fly header/section stuff, draggable option,
+        //marker change,
     }
 </script>
 
