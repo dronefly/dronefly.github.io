@@ -28,7 +28,26 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+        function getLocation() {
+            navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+            function foundLocation(position) {
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
+                alert("LAT : "+lat +", LONG : "+long);
+            }
+        }
 
+        function getLat(){
+            navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+            function foundLocation(position) {
+                return position.coords.latitude;
+        }
+
+        function noLocation() {
+            alert('Could not find location');
+        }
+    </script>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -74,8 +93,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <h1 class="brand-heading">Grayscale</h1>
-                        <p class="intro-text">A free, responsive, one page Bootstrap theme.<br>Created by Start Bootstrap.</p>
+                        <h1 class="brand-heading">DroneFly</h1>
+                        <p class="intro-text">Find out if you can fly your drone in your area<br></p>
                         <a href="#about" class="btn btn-circle page-scroll">
                             <i class="fa fa-angle-double-down animated"></i>
                         </a>
@@ -89,22 +108,24 @@
     <section id="about" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <h2>About Grayscale</h2>
-                <p>Grayscale is a free Bootstrap 3 theme created by Start Bootstrap. It can be yours right now, simply download the template on <a href="http://startbootstrap.com/template-overviews/grayscale/">the preview page</a>. The theme is open source, and you can use it for any purpose, personal or commercial.</p>
-                <p>This theme features stock photos by <a href="http://gratisography.com/">Gratisography</a> along with a custom Google Maps skin courtesy of <a href="http://snazzymaps.com/">Snazzy Maps</a>.</p>
-                <p>Grayscale includes full HTML, CSS, and custom JavaScript files along with LESS files for easy customization.</p>
+                <h2>About DroneFly</h2>
+                <p>DroneFly allows you to fly your drone without infringing upon any laws.</p>
+                <p>You are not allowed to fly your drone within 5 miles of an airport,
+                    near a U.S. military base, or near U.S. National Parks.</p>
+                <p>Checking all these conditions would be too tedious, so we've created
+                    an easier way to do it.</p>
+                <p><button onclick="getLocation()">Get Location</button></p>
             </div>
         </div>
     </section>
 
     <!-- Download Section -->
-    <section id="download" class="content-section text-center">
+    <section id="download" class="container content-section text-center">
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <h2>Download Grayscale</h2>
-                    <p>You can download Grayscale for free on the preview page at Start Bootstrap.</p>
-                    <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download Page</a>
+                    <h2>Fly Map</h2>
+
                 </div>
             </div>
         </div>
@@ -152,8 +173,18 @@
     <!-- Plugin JavaScript -->
     <script src="js/jquery.easing.min.js"></script>
 
+    <script type="text/javascript">
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+        }
+    </script>
+
     <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACL-RAk9vN4uZbpXoinwTocgRYNP5wwXo&callback=initMap"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/grayscale.js"></script>
