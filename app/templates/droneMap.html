@@ -94,7 +94,7 @@
             center: {lat: -34.397, lng: 150.644},
             zoom: 16
         });
-        var infoWindow = ''
+        var infoWindow = '';
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -153,16 +153,16 @@
         {% endfor %}
     }
 	
-	var canFly;
+    var canFly;
     function canFly(position) {
+        var lat1 = position.lat();
+        var long1 = position.lng();
         if (canFly) {
             $('#canFly').text('You can fly your drone here!');
         }
         else {
             $('#canFly').text('You are not allowed to fly your drone here.');
         }
-        //this whole part, can fly header/section stuff, draggable option,
-        //marker change,
     }
 </script>
 
