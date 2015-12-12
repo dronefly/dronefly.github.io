@@ -40,7 +40,7 @@
                 <i class="fa fa-bars"></i>
             </button>
             <a class="navbar-brand page-scroll" href="index.html">
-                <i class="fa fa-play-circle"></i>  <span class="light">Fly</span> Drone
+                <i class="fa fa-compass"></i>  <span class="light">Fly</span> Drone
             </a>
         </div>
 
@@ -81,6 +81,9 @@
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
+<!-- jQuery UI -->
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
@@ -118,6 +121,7 @@
                     }
                     map.setCenter(marker.position);
                     canFly(marker.position);
+					$('#canFly').effect('highlight');
                 });
 				
             }, function() {
