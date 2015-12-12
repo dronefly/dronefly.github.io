@@ -63,8 +63,7 @@
 <section id="about" class="container content-section text-center" style = "padding-top: 79px;">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-            <h3 id = 'canFly'>You must allow the website to access your location in order for
-            the site to work</h3>
+            <h3 id = 'canFly'>Loading, please wait</h3>
         </div>
     </div>
 </section>
@@ -91,11 +90,49 @@
 <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
 
 <script type="text/javascript">
+    //var canFly;
+    function canFly(position) {
+        console.log("hello");
+        //$('#canFly').text('You are not allowed to fly your drone here.');
+        //var lat1 = position.lat();
+        //var long1 = position.lng();
+        
+        {% for shape in shapes %}
+        //console.log({{ shape[] }});
+        var polyCoords = [];
+        {% for coord in shape %}
+        try {
+        	polyCoords.push({lat: {{ coord[1] }}, lng: {{ coord[0] }} });
+        } catch (InvalidValueError) {console.log("error1");}
+        {% endfor %}
+        var noFlyZone;
+        try {
+			noFlyZone = new google.maps.Polygon({
+				paths: polyCoords
+			});
+			canFly5 = google.maps.geometry.poly.containsLocation(position.latLng, noFlyZone);
+        	if (!canFly5) {
+            	$('#canFly').text('You can fly your drone here!');
+        	}
+        	else {
+            	$('#canFly').text('You are not allowed to fly your drone here.');
+            	return;
+        	}
+		} catch (err) {
+			//console.log( {{ shape }} );
+			//$('#canFly').text('You are not allowed to fly your drone here.');
+            	//return;
+		}
+        {% endfor %}
+        
+        
+    };
+    
     var map;
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -34.397, lng: 150.644},
-            zoom: 16
+            zoom: 14
         });
         var infoWindow = '';
         // Try HTML5 geolocation.
@@ -115,12 +152,15 @@
                 });
 				
 				google.maps.event.addListener(marker, 'dragend', function(evt){
-                    var tempPos = {
-                        lat: parseFloat(evt.latLng.lat().toFixed(3)),
-                        long: parseFloat(evt.latLng.lng().toFixed(3))
-                    }
+                    
                     map.setCenter(marker.position);
-                    canFly(marker.position);
+                    console.log(marker.position);
+                    try {
+                    	canFly(evt);
+                    } catch (err) {
+                    	console.log(err.stack);
+                    	//$('#canFly').text('You are not allowed to fly your drone here.');
+                    }
 					$('#canFly').effect('highlight');
                 });
 				
@@ -147,7 +187,7 @@
         } catch (InvalidValueError) {console.log("error1");}
         {% endfor %}
         
-        var noFlyZone
+        var noFlyZone;
         try {
 			noFlyZone = new google.maps.Polygon({
 				paths: polyCoords,
@@ -164,22 +204,13 @@
         {% endfor %}
     }
 	
-    var canFly;
-    function canFly(position) {
-        var lat1 = position.lat();
-        var long1 = position.lng();
-        if (canFly) {
-            $('#canFly').text('You can fly your drone here!');
-        }
-        else {
-            $('#canFly').text('You are not allowed to fly your drone here.');
-        }
-    }
+
 
     function canFly2(position) {
         var lat1 = position.lat;
         var long1 = position.lng;
-        if (canFly) {
+        canFly6 = true;
+        if (canFly6) {
             $('#canFly').text('You can fly your drone here!');
         }
         else {
