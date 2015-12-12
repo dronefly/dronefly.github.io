@@ -23,3 +23,8 @@ def canfly(coordinate):
 			
 	print "You can fly"
 	return True
+
+
+def getData():
+	#print "Giving out data"
+	return data
