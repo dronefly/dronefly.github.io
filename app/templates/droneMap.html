@@ -164,6 +164,17 @@
             $('#canFly').text('You are not allowed to fly your drone here.');
         }
     }
+
+    function canFly2(position) {
+        var lat1 = position.lat;
+        var long1 = position.lng;
+        if (canFly) {
+            $('#canFly').text('You can fly your drone here!');
+        }
+        else {
+            $('#canFly').text('You are not allowed to fly your drone here.');
+        }
+    }
 </script>
 
 <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
